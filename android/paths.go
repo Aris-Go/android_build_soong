@@ -1142,7 +1142,7 @@ func pathForSource(ctx PathContext, pathComponents ...string) (SourcePath, error
 // It differs from pathForSource in that the path is allowed to exist outside of the PathContext.
 func pathForSourceRelaxed(ctx PathContext, pathComponents ...string) (SourcePath, error) {
 	p := filepath.Join(pathComponents...)
-	ret := SourcePath{basePath{p, ""}, "."}
+	ret := SourcePath{basePath{p, ""}}
 
 	if strings.HasPrefix(ret.String(), ctx.Config().soongOutDir) {
 		return ret, fmt.Errorf("source path %s is in output", ret.String())
@@ -1220,7 +1220,7 @@ func PathForSourceRelaxed(ctx PathContext, pathComponents ...string) SourcePath 
 	}
 
 	if modCtx, ok := ctx.(ModuleContext); ok && ctx.Config().AllowMissingDependencies() {
-		exists, err := existsWithDependencies(ctx, path)
+		exists, err := existsWithDependencies(modCtx, path)
 		if err != nil {
 			reportPathError(ctx, err)
 		}
