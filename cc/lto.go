@@ -118,8 +118,10 @@ func (lto *lto) flags(ctx ModuleContext, flags Flags) Flags {
 		// Apply the same for Eng builds as well.
 		if !lto.ThinLTO() || ctx.Config().Eng() {
 			ltoLdFlags = append(ltoLdFlags, "-Wl,--lto-O0")
+		} else {
+			ltoLdFlags = append(ltoLdFlags,"-Wl,--lto-O3")
+			ltoCOnlyFlags = append(ltoCOnlyFlags, "-O3")
 		}
-
 		// Enable Polly globally
 		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly")
 		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-parallel")
